@@ -45,6 +45,7 @@ Ve.__prop = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@40
 .pd-foot{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:var(--faint);font-size:12.5px;flex-wrap:wrap}
 .pd-list{display:none}
 .sfp.pre .pd-line,.sfp.pre .pd-band{transform:scaleX(0)}
+.sfp.nar .pd-rib{grid-template-columns:118px 1fr;gap:0 12px}.sfp.nar .pd-m:nth-child(even){visibility:hidden}.sfp.nar .pd-band span{display:none}.sfp.nar .pd-lab{font-size:13px}
 .sfp.pre .pd-pt{opacity:0;transform:translate(-50%,8px)}
 @media (max-width:760px){.pd-rib{display:none}.pd-list{display:block;position:relative;padding-left:26px}
 .pd-list::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:var(--line2)}
@@ -192,7 +193,8 @@ Ve.__prop = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@40
     var off=onView(root,function(){ root.classList.remove('pre'); if(!RM){ var k=0; auto=setInterval(function(){k=(k+1)%D.ms.length; pick(k);},4500);} });
     root.addEventListener('pointerenter',stop); root.addEventListener('focusin',stop);
     if(RM) root.classList.remove('pre');
-    return function(){stop();off();host.innerHTML='';};
+    function fit(){ root.classList.toggle('nar', w.clientWidth<900); } fit(); var rz=typeof ResizeObserver!=='undefined'?new ResizeObserver(fit):null; if(rz)rz.observe(w);
+    return function(){stop();off();if(rz)rz.disconnect();host.innerHTML='';};
   }
 
   /* ---------- property-ready ---------- */

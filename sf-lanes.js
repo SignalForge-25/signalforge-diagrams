@@ -1,4 +1,4 @@
-/*! SignalForge lanes diagram v1.0.0
+/*! SignalForge lanes diagram v1.1.0
  * Sector briefings: where the data sits today, one version of the truth, what it produces.
  * Four lanes. Each lane matches one signal card on the briefing (same number, same colour).
  * Usage: const stop = window.SFLanes.mount(element, data);  later: stop();
@@ -7,7 +7,7 @@
  */
 (function () {
   "use strict";
-  var VERSION = "1.0.0";
+  var VERSION = "1.1.0";
   var NS = "http://www.w3.org/2000/svg";
   var MQ = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
   function RED() { return MQ.matches && !document.documentElement.classList.contains("force-motion"); }
@@ -74,7 +74,8 @@
         n: l.n || i + 1,
         c: str(l.color, COL[i]),
         growth: growth,
-        kind: growth ? str(d.growthLabel, "Growth") : str(d.dutyLabel, "Obligation"),
+        kind: clip(str(l.label, growth ? str(d.growthLabel, "Growth") : str(d.dutyLabel, "Obligation")), 18),
+        check: clip(l.check, 44),
         out: clip(l.out, 28),
         when: clip(l.when, 18),
         holds: clip(l.holds, 26),
@@ -148,6 +149,7 @@
         E("b", { text: l.out }, ob);
         var s0 = E("span", { cls: "sfl-s0" }, ob); ico("clock", s0); s0.appendChild(document.createTextNode(l.today));
         var s1 = E("span", { cls: "sfl-s1" }, ob); ico("check", s1); s1.appendChild(document.createTextNode(l.with));
+        if (l.check) { var k1 = E("span", { cls: "sfl-ck" }, ob); ico("user", k1); k1.appendChild(document.createTextNode(l.check)); }
         rows.push([rail, src, w1, cell, w2, out]);
       });
     } else {
@@ -165,6 +167,7 @@
         if (l.manual.length) man(card, l);
         var c0 = E("span", { cls: "sfl-s0" }, card); ico("clock", c0); c0.appendChild(document.createTextNode(l.today));
         var s1 = E("span", { cls: "sfl-s1" }, card); ico("check", s1); s1.appendChild(document.createTextNode(l.with));
+        if (l.check) { var k2 = E("span", { cls: "sfl-ck" }, card); ico("user", k2); k2.appendChild(document.createTextNode(l.check)); }
         rows.push([card]);
       });
     }
@@ -303,6 +306,8 @@
   "@keyframes sflSlow{0%{left:0;opacity:0}2%{opacity:1}11%{left:100%;opacity:1}12%{left:100%;opacity:0}100%{left:100%;opacity:0}}\n" +
   ".sfl .sfl-s0{display:flex;align-items:center;gap:6px;color:#FDE68A}.sfl .sfl-s0 .sfl-ic{width:14px;height:14px;flex:none;color:#FBBF24}\n" +
   ".sfl .m0 .sfl-out,.sfl .m0 .sfl-cc{border-style:dashed}\n" +
+  ".sfl .sfl-ck{display:none;align-items:center;gap:6px;font-size:11.5px;color:var(--pale);margin-top:2px;padding-top:6px;border-top:1px dashed var(--line2)}.sfl .sfl-ck .sfl-ic{width:13px;height:13px;flex:none;color:var(--lc)}\n" +
+  ".sfl .m1 .on .sfl-ck,.sfl .m1 .sfl-cc.on .sfl-ck{display:flex}\n" +
   /* footer */
   ".sfl .sfl-ft{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}\n" +
   ".sfl .sfl-tgs{display:flex;flex-wrap:wrap;gap:8px}\n" +
